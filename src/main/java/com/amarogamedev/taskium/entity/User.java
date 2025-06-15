@@ -1,8 +1,7 @@
 package com.amarogamedev.taskium.entity;
 
-import com.amarogamedev.taskium.enums.Tipo;
+import com.amarogamedev.taskium.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,42 +15,42 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "usuario")
+@Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "nome", nullable = false)
-    String nome;
+    @Column(name = "name", nullable = false)
+    String name;
 
-    @Column(name = "email", unique = true, nullable = false)
-    String email;
+    @Column(name = "login", unique = true, nullable = false)
+    String login;
 
     @JsonIgnore
-    @Column(name = "senha", nullable = false)
-    String senha;
+    @Column(name = "password", nullable = false)
+    String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
-    Tipo tipo;
+    @Column(name = "role", nullable = false)
+    UserRole userRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(tipo == Tipo.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(userRole == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 }

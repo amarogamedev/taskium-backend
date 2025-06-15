@@ -1,10 +1,10 @@
 package com.amarogamedev.taskium.authorization;
 
-import com.amarogamedev.taskium.dto.UsuarioLoginDTO;
-import com.amarogamedev.taskium.dto.UsuarioRegistroDTO;
-import com.amarogamedev.taskium.entity.Usuario;
-import com.amarogamedev.taskium.enums.Tipo;
-import com.amarogamedev.taskium.service.UsuarioService;
+import com.amarogamedev.taskium.dto.UserLoginDTO;
+import com.amarogamedev.taskium.dto.UserRegisterDTO;
+import com.amarogamedev.taskium.entity.User;
+import com.amarogamedev.taskium.enums.UserRole;
+import com.amarogamedev.taskium.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,44 +19,43 @@ public class AuthenticationService {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UsuarioService usuarioService;
+    UserService userService;
 
     @Autowired
     TokenService tokenService;
 
-    public String login(UsuarioLoginDTO usuarioLoginDTO) {
+    public String login(UserLoginDTO userLoginDTO) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(
-                usuarioLoginDTO.email(),
-                usuarioLoginDTO.senha()
+                userLoginDTO.login(),
+                userLoginDTO.password()
         );
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
-        return tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        return tokenService.generateToken((User) authentication.getPrincipal());
     }
 
-    public Usuario registrar(UsuarioRegistroDTO usuarioRegistroDTO) {
-        validarUsuarioJaCadastrado(usuarioRegistroDTO.email());
-        validarSenha(usuarioRegistroDTO.senha());
+    public User register(UserRegisterDTO userRegisterDTO) {
+        validateUserAlreadyRegistered(userRegisterDTO.login());
+        validatePassword(userRegisterDTO.password());
 
-        String senhaCriptografada = new BCryptPasswordEncoder().encode(usuarioRegistroDTO.senha());
+        String cryptoPassword = new BCryptPasswordEncoder().encode(userRegisterDTO.password());
 
-        Usuario usuario = new Usuario();
-        usuario.setSenha(senhaCriptografada);
-        usuario.setEmail(usuarioRegistroDTO.email());
-        usuario.setNome(usuarioRegistroDTO.nome());
-        usuario.setTipo(Tipo.USER);
-        return usuarioService.salvarUsuario(usuario);
+        User user = new User();
+        user.setPassword(cryptoPassword);
+        user.setLogin(userRegisterDTO.login());
+        user.setName(userRegisterDTO.name());
+        user.setUserRole(UserRole.USER);
+        return userService.saveUser(user);
     }
 
-    void validarUsuarioJaCadastrado(String email) {
-        if(usuarioService.usuarioExiste(email)) {
-            throw new IllegalArgumentException("Usuário já cadastrado");
+    void validateUserAlreadyRegistered(String login) {
+        if(userService.userExists(login)) {
+            throw new IllegalArgumentException("There is already an user registered with this email");
         }
     }
 
-    void validarSenha(String senha) {
+    void validatePassword(String senha) {
         if (senha.length() < 8) {
-            throw new IllegalArgumentException("A senha deve ter pelo menos 8 caracteres");
+            throw new IllegalArgumentException("The password must have at least 8 characters");
         }
-        //TODO melhorar a validação da senha, incluindo letras maiúsculas, minúsculas, números e caracteres especiais
     }
 }

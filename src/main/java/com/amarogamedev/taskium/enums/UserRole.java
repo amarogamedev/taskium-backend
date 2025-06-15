@@ -1,5 +1,5 @@
 package com.amarogamedev.taskium.enums;
 
-public enum Tipo {
+public enum UserRole {
     USER, ADMIN
 }

@@ -1,7 +1,7 @@
 package com.amarogamedev.taskium.authorization;
 
-import com.amarogamedev.taskium.entity.Usuario;
-import com.amarogamedev.taskium.service.UsuarioService;
+import com.amarogamedev.taskium.entity.User;
+import com.amarogamedev.taskium.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,15 +22,15 @@ public class SecurityFilter extends OncePerRequestFilter {
     TokenService tokenService;
 
     @Autowired
-    UsuarioService usuarioService;
+    UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = recoverToken(request);
         if(token != null && !token.isEmpty()) {
-            String emailUsuario = tokenService.validarToken(token);
-            Usuario usuario = usuarioService.buscarUsuario(emailUsuario);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+            String userLogin = tokenService.validateToken(token);
+            User user = userService.findUserByLogin(userLogin);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

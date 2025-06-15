@@ -1,6 +1,6 @@
 package com.amarogamedev.taskium.authorization;
 
-import com.amarogamedev.taskium.entity.Usuario;
+import com.amarogamedev.taskium.entity.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,19 +15,19 @@ public class TokenService {
     @Value("${jwt.secret}")
     String secret;
 
-    public String gerarToken(Usuario usuario) {
+    public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create().withIssuer("taskium-auth")
-                    .withSubject(usuario.getEmail())
+                    .withSubject(user.getLogin())
                     .withExpiresAt(LocalDateTime.now().plusHours(2).atZone(ZoneId.systemDefault()).toInstant())
                     .sign(algorithm);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao gerar token JWT: " + e.getMessage());
+            throw new RuntimeException("An error ocurrued while generating the token: " + e.getMessage());
         }
     }
 
-    public String validarToken(String token) {
+    public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -36,7 +36,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (Exception e) {
-            throw new RuntimeException("Token inválido ou expirado");
+            throw new RuntimeException("Invalid token");
         }
     }
 }

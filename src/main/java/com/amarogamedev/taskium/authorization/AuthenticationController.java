@@ -1,8 +1,8 @@
 package com.amarogamedev.taskium.authorization;
 
-import com.amarogamedev.taskium.dto.UsuarioLoginDTO;
-import com.amarogamedev.taskium.dto.UsuarioRegistroDTO;
-import com.amarogamedev.taskium.entity.Usuario;
+import com.amarogamedev.taskium.dto.UserLoginDTO;
+import com.amarogamedev.taskium.dto.UserRegisterDTO;
+import com.amarogamedev.taskium.entity.User;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +20,20 @@ public class AuthenticationController {
 
     @PermitAll
     @PostMapping(value = "/login")
-    public ResponseEntity<String> login (@RequestBody UsuarioLoginDTO usuarioLoginDTO) {
+    public ResponseEntity<String> login (@RequestBody UserLoginDTO userLoginDTO) {
         try {
-            return ResponseEntity.ok(authenticationService.login(usuarioLoginDTO));
+            return ResponseEntity.ok(authenticationService.login(userLoginDTO));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Credenciais inválidas");
+            return ResponseEntity.badRequest().body("Invalid credentials");
         }
     }
 
     @PermitAll
-    @PostMapping(value = "/registrar")
-    public ResponseEntity<String> registrar (@RequestBody UsuarioRegistroDTO usuarioRegistroDTO) {
+    @PostMapping(value = "/register")
+    public ResponseEntity<String> register (@RequestBody UserRegisterDTO userRegisterDTO) {
         try {
-            Usuario usuario = authenticationService.registrar(usuarioRegistroDTO);
-            UsuarioLoginDTO loginDTO = new UsuarioLoginDTO(usuario.getEmail(), usuarioRegistroDTO.senha());
+            User user = authenticationService.register(userRegisterDTO);
+            UserLoginDTO loginDTO = new UserLoginDTO(user.getLogin(), userRegisterDTO.password());
             return ResponseEntity.ok(authenticationService.login(loginDTO));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
