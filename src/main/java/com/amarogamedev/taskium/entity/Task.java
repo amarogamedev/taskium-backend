@@ -4,12 +4,14 @@ import com.amarogamedev.taskium.enums.Priority;
 import com.amarogamedev.taskium.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "task")
@@ -27,7 +29,7 @@ public class Task {
     private User assignedUser;
 
     @ManyToOne
-    @JoinColumn(name = "created_by_user_id", nullable = false)
+    @JoinColumn(name = "created_by_user_id", nullable = false, updatable = false)
     private User createdByUser;
 
     @Enumerated(EnumType.STRING)
@@ -57,6 +59,10 @@ public class Task {
     @ManyToOne
     @JsonBackReference
     private Task parentTask;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "parentTask", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> subtasks;
 
     @JoinColumn(name = "board_id")
     @JsonIgnore

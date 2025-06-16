@@ -22,6 +22,10 @@ public class UserService {
         return Objects.requireNonNull(userRepository.findByLogin(login));
     }
 
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }

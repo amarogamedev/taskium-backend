@@ -14,7 +14,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "key", nullable = false)
+    @Column(name = "board_key", nullable = false)
     private String key;
 
     @Column(name = "name", nullable = false)
@@ -24,3 +24,4 @@ public class Board {
     @JoinColumn(name = "owner_user_id", nullable = false)
     private User owner;
 }
+

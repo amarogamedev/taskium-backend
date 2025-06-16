@@ -5,9 +5,7 @@ import com.amarogamedev.taskium.service.BoardService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +24,17 @@ public class BoardRestController {
         }
         catch (Exception e) {
             log.error("An error ocurred while searching for all the boards", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
+        try {
+            BoardDTO createdBoard = boardService.saveBoard(boardDTO);
+            return ResponseEntity.ok(createdBoard);
+        } catch (Exception e) {
+            log.error("An error occurred while creating a board", e);
             return ResponseEntity.internalServerError().build();
         }
     }

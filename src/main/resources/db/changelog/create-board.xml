@@ -10,7 +10,7 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="key" type="VARCHAR(255)">
+            <column name="board_key" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
@@ -22,3 +22,4 @@
         </createTable>
     </changeSet>
 </databaseChangeLog>
+
