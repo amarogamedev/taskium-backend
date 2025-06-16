@@ -1,5 +1,6 @@
-package com.amarogamedev.taskium.authorization;
+package com.amarogamedev.taskium.auth;
 
+import com.amarogamedev.taskium.auth.service.TokenService;
 import com.amarogamedev.taskium.entity.User;
 import com.amarogamedev.taskium.service.UserService;
 import jakarta.servlet.FilterChain;

@@ -1,7 +1,8 @@
-package com.amarogamedev.taskium.authorization;
+package com.amarogamedev.taskium.auth;
 
-import com.amarogamedev.taskium.dto.UserLoginDTO;
-import com.amarogamedev.taskium.dto.UserRegisterDTO;
+import com.amarogamedev.taskium.auth.dto.UserLoginDTO;
+import com.amarogamedev.taskium.auth.dto.UserRegisterDTO;
+import com.amarogamedev.taskium.auth.service.AuthenticationService;
 import com.amarogamedev.taskium.entity.User;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;

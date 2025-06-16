@@ -1,4 +1,4 @@
-package com.amarogamedev.taskium.authorization;
+package com.amarogamedev.taskium.auth.service;
 
 import com.amarogamedev.taskium.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

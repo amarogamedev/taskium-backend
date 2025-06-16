@@ -1,7 +1,7 @@
-package com.amarogamedev.taskium.authorization;
+package com.amarogamedev.taskium.auth.service;
 
-import com.amarogamedev.taskium.dto.UserLoginDTO;
-import com.amarogamedev.taskium.dto.UserRegisterDTO;
+import com.amarogamedev.taskium.auth.dto.UserLoginDTO;
+import com.amarogamedev.taskium.auth.dto.UserRegisterDTO;
 import com.amarogamedev.taskium.entity.User;
 import com.amarogamedev.taskium.enums.UserRole;
 import com.amarogamedev.taskium.service.UserService;

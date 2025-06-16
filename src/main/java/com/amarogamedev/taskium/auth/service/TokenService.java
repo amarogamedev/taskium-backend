@@ -1,4 +1,4 @@
-package com.amarogamedev.taskium.authorization;
+package com.amarogamedev.taskium.auth.service;
 
 import com.amarogamedev.taskium.entity.User;
 import com.auth0.jwt.JWT;

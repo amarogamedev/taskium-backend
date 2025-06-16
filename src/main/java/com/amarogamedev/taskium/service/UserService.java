@@ -3,6 +3,7 @@ package com.amarogamedev.taskium.service;
 import com.amarogamedev.taskium.entity.User;
 import com.amarogamedev.taskium.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -12,6 +13,10 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    public static User getLoggedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
     public User findUserByLogin(String login) {
         return Objects.requireNonNull(userRepository.findByLogin(login));

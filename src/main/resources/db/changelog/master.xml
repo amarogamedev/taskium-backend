@@ -6,5 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
 
     <include file="db/changelog/create-user.xml"/>
+    <include file="db/changelog/create-board.xml"/>
+    <include file="db/changelog/create-task.xml"/>
 
 </databaseChangeLog>
