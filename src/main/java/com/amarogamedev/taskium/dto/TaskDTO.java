@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 public record TaskDTO(
     Long id,
     Long assignedUserId,
+    String assignedUserName,
     Long createdByUserId,
+    String createdByUserName,
     TaskStatus status,
     String title,
     String description,
@@ -24,7 +26,9 @@ public record TaskDTO(
         return new TaskDTO(
             task.getId(),
             task.getAssignedUser() != null ? task.getAssignedUser().getId() : null,
+            task.getAssignedUser() != null ? task.getAssignedUser().getName() : null,
             task.getCreatedByUser() != null ? task.getCreatedByUser().getId() : null,
+            task.getCreatedByUser() != null ? task.getCreatedByUser().getName() : null,
             task.getStatus(),
             task.getTitle(),
             task.getDescription(),

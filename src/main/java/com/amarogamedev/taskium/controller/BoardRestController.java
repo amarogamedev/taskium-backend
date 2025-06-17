@@ -28,6 +28,16 @@ public class BoardRestController {
         }
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BoardDTO> getBoardById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(boardService.getBoardById(id));
+        } catch (Exception e) {
+            log.error("An error occurred while searching for the board with id: {}", id, e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
         try {

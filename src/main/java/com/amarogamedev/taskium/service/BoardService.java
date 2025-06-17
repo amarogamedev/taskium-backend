@@ -37,4 +37,9 @@ public class BoardService {
         board.setOwner(UserService.getLoggedUser());
         return BoardDTO.fromEntity(repository.save(board), 0);
     }
+
+    public BoardDTO getBoardById(Long id) {
+        Board board = findBoardById(id);
+        return BoardDTO.fromEntity(board, taskService.getTasksByBoardId(board.getId()).size());
+    }
 }
