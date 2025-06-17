@@ -4,7 +4,10 @@ import com.amarogamedev.taskium.dto.TaskDTO;
 import com.amarogamedev.taskium.entity.Task;
 import com.amarogamedev.taskium.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -13,9 +16,11 @@ public class TaskService {
     TaskRepository taskRepository;
 
     @Autowired
+    @Lazy
     UserService userService;
 
     @Autowired
+    @Lazy
     BoardService boardService;
 
     public TaskDTO getTaskById(Long id) {
@@ -41,7 +46,7 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public Object getTasksByBoardId(Long boardId) {
+    public List<TaskDTO> getTasksByBoardId(Long boardId) {
         return taskRepository.findByBoardId(boardId).stream().map(TaskDTO::fromEntity).toList();
     }
 }

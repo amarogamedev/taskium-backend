@@ -1,5 +1,6 @@
 package com.amarogamedev.taskium.auth;
 
+import com.amarogamedev.taskium.auth.dto.UserInfoDTO;
 import com.amarogamedev.taskium.auth.dto.UserLoginDTO;
 import com.amarogamedev.taskium.auth.dto.UserRegisterDTO;
 import com.amarogamedev.taskium.auth.service.AuthenticationService;
@@ -21,7 +22,7 @@ public class AuthenticationController {
 
     @PermitAll
     @PostMapping(value = "/login")
-    public ResponseEntity<String> login (@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<Object> login (@RequestBody UserLoginDTO userLoginDTO) {
         try {
             return ResponseEntity.ok(authenticationService.login(userLoginDTO));
         } catch (Exception e) {
@@ -31,7 +32,7 @@ public class AuthenticationController {
 
     @PermitAll
     @PostMapping(value = "/register")
-    public ResponseEntity<String> register (@RequestBody UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<Object> register (@RequestBody UserRegisterDTO userRegisterDTO) {
         try {
             User user = authenticationService.register(userRegisterDTO);
             UserLoginDTO loginDTO = new UserLoginDTO(user.getLogin(), userRegisterDTO.password());

@@ -6,14 +6,16 @@ public record BoardDTO(
     Long id,
     String key,
     String name,
-    Long ownerId
+    Long ownerId,
+    Integer taskCount
 ) {
-    public static BoardDTO fromEntity(Board board) {
+    public static BoardDTO fromEntity(Board board, Integer taskCount) {
         return new BoardDTO(
                 board.getId(),
                 board.getKey(),
                 board.getName(),
-                board.getOwner() != null ? board.getOwner().getId() : null
+                board.getOwner() != null ? board.getOwner().getId() : null,
+                taskCount
         );
     }
 

@@ -1,5 +1,6 @@
 package com.amarogamedev.taskium.auth.service;
 
+import com.amarogamedev.taskium.auth.dto.UserInfoDTO;
 import com.amarogamedev.taskium.auth.dto.UserLoginDTO;
 import com.amarogamedev.taskium.auth.dto.UserRegisterDTO;
 import com.amarogamedev.taskium.entity.User;
@@ -24,13 +25,15 @@ public class AuthenticationService {
     @Autowired
     TokenService tokenService;
 
-    public String login(UserLoginDTO userLoginDTO) {
+    public UserInfoDTO login(UserLoginDTO userLoginDTO) {
         UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(
                 userLoginDTO.login(),
                 userLoginDTO.password()
         );
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
-        return tokenService.generateToken((User) authentication.getPrincipal());
+        String token = tokenService.generateToken((User) authentication.getPrincipal());
+        User user = userService.findUserByLogin(userLoginDTO.login());
+        return new UserInfoDTO(token, user.getLogin(), user.getName(), user.getId());
     }
 
     public User register(UserRegisterDTO userRegisterDTO) {
@@ -53,8 +56,8 @@ public class AuthenticationService {
         }
     }
 
-    void validatePassword(String senha) {
-        if (senha.length() < 8) {
+    void validatePassword(String password) {
+        if (password.length() < 8) {
             throw new IllegalArgumentException("The password must have at least 8 characters");
         }
     }
