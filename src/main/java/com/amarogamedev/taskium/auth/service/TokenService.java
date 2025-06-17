@@ -8,12 +8,16 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class TokenService {
 
     @Value("${jwt.secret}")
     String secret;
+
+    private Set<String> invalidatedTokens = new HashSet<>();
 
     public String generateToken(User user) {
         try {
@@ -27,7 +31,14 @@ public class TokenService {
         }
     }
 
+    public void invalidateToken(String token) {
+        invalidatedTokens.add(token);
+    }
+
     public String validateToken(String token) {
+        if (invalidatedTokens.contains(token)) {
+            throw new RuntimeException("Token has been invalidated");
+        }
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)

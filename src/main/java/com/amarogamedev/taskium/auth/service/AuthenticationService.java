@@ -61,4 +61,11 @@ public class AuthenticationService {
             throw new IllegalArgumentException("The password must have at least 8 characters");
         }
     }
+
+    public void logout(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+            tokenService.invalidateToken(token);
+        }
+    }
 }
