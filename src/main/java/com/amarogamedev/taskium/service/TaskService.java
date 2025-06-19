@@ -41,10 +41,13 @@ public class TaskService {
             task.setParentTask(taskRepository.findById(taskDTO.parentTaskId()).orElseThrow());
         }
 
+        boardService.validateMember(task.getBoard());
         return TaskDTO.fromEntity(taskRepository.save(task));
     }
 
     public void deleteTask(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow();
+        boardService.validateMember(task.getBoard());
         taskRepository.deleteById(id);
     }
 

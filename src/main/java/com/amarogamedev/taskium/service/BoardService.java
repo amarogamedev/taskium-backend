@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,23 +46,31 @@ public class BoardService {
     public BoardDTO saveBoard(BoardDTO boardDTO) {
         Board board = BoardDTO.toEntity(boardDTO);
         board.setOwner(UserService.getLoggedUser());
+        if(board.getId() != null) {
+            validateMember(board);
+        }
         return BoardDTO.fromEntity(repository.save(board), 0);
     }
 
     public BoardDTO getBoardById(Long id) {
         Board board = findBoardById(id);
+        validateMember(board);
+        return BoardDTO.fromEntity(board, taskService.getTasksByBoardId(board.getId()).size());
+    }
+
+    public void validateMember(Board board) {
         User loggedUser = UserService.getLoggedUser();
-        if(board.getOwner() != loggedUser && !board.getMembers().contains(loggedUser)) {
+        boolean isMember = board.getMembers() != null && board.getMembers().stream().anyMatch(member -> Objects.equals(member.getId(), loggedUser.getId()));
+        if(!Objects.equals(board.getOwner().getId(), loggedUser.getId()) && !isMember) {
             throw new IllegalArgumentException("You do not have permission to access this board");
         }
-        return BoardDTO.fromEntity(board, taskService.getTasksByBoardId(board.getId()).size());
     }
 
     public BoardDTO addMember(Long boardId, String userLogin) {
         Board board = findBoardById(boardId);
         User loggedUser = UserService.getLoggedUser();
 
-        if (!board.getOwner().equals(loggedUser)) {
+        if (!Objects.equals(board.getOwner().getId(), loggedUser.getId())) {
             throw new IllegalArgumentException("Only the board owner can add members");
         }
 
