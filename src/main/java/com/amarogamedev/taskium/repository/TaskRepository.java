@@ -1,20 +1,17 @@
 package com.amarogamedev.taskium.repository;
 
-import com.amarogamedev.taskium.entity.Board;
 import com.amarogamedev.taskium.entity.Task;
-import com.amarogamedev.taskium.entity.User;
-import com.amarogamedev.taskium.enums.TaskStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    List<Task> findByBoardId(Long boardId);
-    List<Task> findByBoard(Board board);
-    List<Task> findByStatus(TaskStatus status);
-    List<Task> findByAssignedUser(User user);
-    List<Task> findByBoardAndStatus(Board board, TaskStatus status);
-    List<Task> findByParentTask(Task parentTask);
+
+    @Query(" SELECT t FROM Task t WHERE t.board.id = :boardId AND (t.status != 'DONE' OR (t.completedDate IS NULL OR t.completedDate >= :dateLimit)) ORDER BY t.creationDate DESC")
+    List<Task> findByBoardIdAndDateLimit(@Param("boardId") Long boardId, @Param("dateLimit") Date dateLimit);
 }

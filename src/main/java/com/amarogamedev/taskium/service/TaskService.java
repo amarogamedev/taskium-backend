@@ -2,6 +2,7 @@ package com.amarogamedev.taskium.service;
 
 import com.amarogamedev.taskium.dto.TaskDTO;
 import com.amarogamedev.taskium.entity.Task;
+import com.amarogamedev.taskium.enums.TaskStatus;
 import com.amarogamedev.taskium.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -35,11 +36,17 @@ public class TaskService {
         task.setBoard(boardService.findBoardById(taskDTO.boardId()));
         task.setCreationDate(Date.valueOf(LocalDateTime.now().toLocalDate()));
 
-        if(taskDTO.assignedUserId() != null) {
+        if (taskDTO.assignedUserId() != null) {
             task.setAssignedUser(userService.findUserById(taskDTO.assignedUserId()));
         }
-        if(taskDTO.parentTaskId() != null) {
+        if (taskDTO.parentTaskId() != null) {
             task.setParentTask(taskRepository.findById(taskDTO.parentTaskId()).orElseThrow());
+        }
+        if (TaskStatus.DONE.equals(task.getStatus())) {
+            task.setCompletedDate(Date.valueOf(LocalDateTime.now().toLocalDate()));
+        }
+        else {
+            task.setCompletedDate(null);
         }
 
         boardService.validateMember(task.getBoard());
@@ -53,6 +60,7 @@ public class TaskService {
     }
 
     public List<TaskDTO> getTasksByBoardId(Long boardId) {
-        return taskRepository.findByBoardId(boardId).stream().map(TaskDTO::fromEntity).toList();
+        Date sevenDaysAgo = Date.valueOf(LocalDateTime.now().minusDays(5L).toLocalDate());
+        return taskRepository.findByBoardIdAndDateLimit(boardId, sevenDaysAgo).stream().map(TaskDTO::fromEntity).toList();
     }
 }
