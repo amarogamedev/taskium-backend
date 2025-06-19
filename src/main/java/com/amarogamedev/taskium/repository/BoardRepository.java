@@ -10,5 +10,5 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Board findByKey(String key);
     List<Board> findByOwnerId(Long ownerId);
+    List<Board> findByMembersId(Long memberId);
 }
-

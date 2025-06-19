@@ -2,11 +2,15 @@ package com.amarogamedev.taskium.dto;
 
 import com.amarogamedev.taskium.entity.Board;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public record BoardDTO(
     Long id,
     String key,
     String name,
-    Long ownerId,
+    UserDTO owner,
+    Set<UserDTO> members,
     Integer taskCount
 ) {
     public static BoardDTO fromEntity(Board board, Integer taskCount) {
@@ -14,7 +18,8 @@ public record BoardDTO(
                 board.getId(),
                 board.getKey(),
                 board.getName(),
-                board.getOwner() != null ? board.getOwner().getId() : null,
+                board.getOwner() != null ? UserDTO.fromEntity(board.getOwner()) : null,
+                board.getMembers() != null ? board.getMembers().stream().map(UserDTO::fromEntity).collect(Collectors.toSet()) : null,
                 taskCount
         );
     }

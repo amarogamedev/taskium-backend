@@ -20,7 +20,7 @@ public class BoardRestController {
     @GetMapping(value = "/all")
     public ResponseEntity<List<BoardDTO>> getAllBoards() {
         try {
-            return ResponseEntity.ok(boardService.findAllBoardsByOwner());
+            return ResponseEntity.ok(boardService.findAllUserBoards());
         }
         catch (Exception e) {
             log.error("An error ocurred while searching for all the boards", e);
@@ -45,6 +45,32 @@ public class BoardRestController {
             return ResponseEntity.ok(createdBoard);
         } catch (Exception e) {
             log.error("An error occurred while creating a board", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/{boardId}/members/{userLogin}")
+    public ResponseEntity<BoardDTO> addMember(@PathVariable Long boardId, @PathVariable String userLogin) {
+        try {
+            return ResponseEntity.ok(boardService.addMember(boardId, userLogin));
+        } catch (IllegalArgumentException e) {
+            log.error("Error adding member to board: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            log.error("An error occurred while adding member to board", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{boardId}/members/{userLogin}")
+    public ResponseEntity<BoardDTO> removeMember(@PathVariable Long boardId, @PathVariable String userLogin) {
+        try {
+            return ResponseEntity.ok(boardService.removeMember(boardId, userLogin));
+        } catch (IllegalArgumentException e) {
+            log.error("Error removing member from board: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            log.error("An error occurred while removing member from board", e);
             return ResponseEntity.internalServerError().build();
         }
     }

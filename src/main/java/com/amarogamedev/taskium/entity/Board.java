@@ -3,6 +3,8 @@ package com.amarogamedev.taskium.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "board")
 @Data
@@ -23,5 +25,12 @@ public class Board {
     @ManyToOne
     @JoinColumn(name = "owner_user_id", nullable = false)
     private User owner;
-}
 
+    @ManyToMany
+    @JoinTable(
+        name = "board_users",
+        joinColumns = @JoinColumn(name = "board_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> members;
+}
