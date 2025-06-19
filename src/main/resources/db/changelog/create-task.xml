@@ -21,11 +21,11 @@
             </column>
             <column name="title" type="VARCHAR(255)"/>
             <column name="description" type="TEXT"/>
-            <column name="creation_date" type="DATETIME">
+            <column name="creation_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
-            <column name="due_date" type="DATETIME"/>
-            <column name="completed_date" type="DATETIME"/>
+            <column name="due_date" type="DATE"/>
+            <column name="completed_date" type="DATE"/>
             <column name="priority" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

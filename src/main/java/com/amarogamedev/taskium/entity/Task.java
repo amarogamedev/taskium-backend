@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -43,13 +44,13 @@ public class Task {
     private String description;
 
     @Column(name = "creation_date", nullable = false, updatable = false)
-    private LocalDateTime creationDate;
+    private Date creationDate;
 
     @Column(name = "due_date")
-    private LocalDateTime dueDate;
+    private Date dueDate;
 
     @Column(name = "completed_date")
-    private LocalDateTime completedDate;
+    private Date completedDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "priority", nullable = false)

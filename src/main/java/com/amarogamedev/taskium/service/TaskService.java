@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class TaskService {
         Task task = TaskDTO.toEntity(taskDTO);
         task.setCreatedByUser(UserService.getLoggedUser());
         task.setBoard(boardService.findBoardById(taskDTO.boardId()));
-        task.setCreationDate(LocalDateTime.now());
+        task.setCreationDate(Date.valueOf(LocalDateTime.now().toLocalDate()));
 
         if(taskDTO.assignedUserId() != null) {
             task.setAssignedUser(userService.findUserById(taskDTO.assignedUserId()));

@@ -5,6 +5,7 @@ import com.amarogamedev.taskium.enums.Priority;
 import com.amarogamedev.taskium.enums.TaskStatus;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public record TaskDTO(
     Long id,
@@ -15,9 +16,9 @@ public record TaskDTO(
     TaskStatus status,
     String title,
     String description,
-    LocalDateTime creationDate,
-    LocalDateTime dueDate,
-    LocalDateTime completedDate,
+    Date creationDate,
+    Date dueDate,
+    Date completedDate,
     Priority priority,
     Long parentTaskId,
     Long boardId
