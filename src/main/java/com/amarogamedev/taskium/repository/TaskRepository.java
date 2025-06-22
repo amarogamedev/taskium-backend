@@ -14,4 +14,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query(" SELECT t FROM Task t WHERE t.board.id = :boardId AND (t.status != 'DONE' OR (t.completedDate IS NULL OR t.completedDate >= :dateLimit)) ORDER BY t.id DESC")
     List<Task> findByBoardIdAndDateLimit(@Param("boardId") Long boardId, @Param("dateLimit") Date dateLimit);
+
+    List<Task> findByBoardId(Long boardId);
 }

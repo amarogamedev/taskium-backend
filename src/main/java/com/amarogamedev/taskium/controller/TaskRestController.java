@@ -28,6 +28,16 @@ public class TaskRestController {
     @GetMapping(value = "/board/{boardId}")
     public ResponseEntity<?> getTasksByBoardId(@PathVariable Long boardId) {
         try {
+            return ResponseEntity.ok(taskService.getTasksByBoardIdWith5DaysLimit(boardId));
+        } catch (Exception e) {
+            log.error("An error occurred while searching for tasks on board with id: {}", boardId, e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping(value = "/board/{boardId}/all")
+    public ResponseEntity<?> getAllTasksByBoardId(@PathVariable Long boardId) {
+        try {
             return ResponseEntity.ok(taskService.getTasksByBoardId(boardId));
         } catch (Exception e) {
             log.error("An error occurred while searching for tasks on board with id: {}", boardId, e);

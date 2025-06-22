@@ -56,8 +56,12 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public List<TaskDTO> getTasksByBoardId(Long boardId) {
+    public List<TaskDTO> getTasksByBoardIdWith5DaysLimit(Long boardId) {
         Date sevenDaysAgo = Date.valueOf(LocalDateTime.now().minusDays(5L).toLocalDate());
         return taskRepository.findByBoardIdAndDateLimit(boardId, sevenDaysAgo).stream().map(TaskDTO::fromEntity).toList();
+    }
+
+    public List<TaskDTO> getTasksByBoardId(Long boardId) {
+        return taskRepository.findByBoardId(boardId).stream().map(TaskDTO::fromEntity).toList();
     }
 }
