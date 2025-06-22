@@ -39,9 +39,6 @@ public class TaskService {
         if (taskDTO.assignedUserId() != null) {
             task.setAssignedUser(userService.findUserById(taskDTO.assignedUserId()));
         }
-        if (taskDTO.parentTaskId() != null) {
-            task.setParentTask(taskRepository.findById(taskDTO.parentTaskId()).orElseThrow());
-        }
         if (TaskStatus.DONE.equals(task.getStatus())) {
             task.setCompletedDate(Date.valueOf(LocalDateTime.now().toLocalDate()));
         }

@@ -21,9 +21,7 @@ public record TaskDTO(
     Date dueDate,
     Date completedDate,
     Priority priority,
-    Long parentTaskId,
-    Long boardId,
-    List<TaskDTO> subtasks
+    Long boardId
 ) {
     public static TaskDTO fromEntity(Task task) {
         return new TaskDTO(
@@ -39,9 +37,7 @@ public record TaskDTO(
             task.getDueDate(),
             task.getCompletedDate(),
             task.getPriority(),
-            task.getParentTask() != null ? task.getParentTask().getId() : null,
-            task.getBoard() != null ? task.getBoard().getId() : null,
-            task.getSubtasks().stream().map(TaskDTO::fromEntity).toList()
+            task.getBoard() != null ? task.getBoard().getId() : null
         );
     }
 

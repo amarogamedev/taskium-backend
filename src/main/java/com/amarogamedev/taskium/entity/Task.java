@@ -56,15 +56,6 @@ public class Task {
     @Column(name = "priority", nullable = false)
     private Priority priority;
 
-    @JoinColumn(name = "parent_task_id")
-    @ManyToOne
-    @JsonBackReference
-    private Task parentTask;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "parentTask", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> subtasks;
-
     @JoinColumn(name = "board_id")
     @JsonIgnore
     @ManyToOne
