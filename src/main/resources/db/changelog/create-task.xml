@@ -29,9 +29,6 @@
             <column name="priority" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="parent_task_id" type="BIGINT">
-                <constraints foreignKeyName="fk_task_parent" references="task(id)"/>
-            </column>
             <column name="board_id" type="BIGINT">
                 <constraints foreignKeyName="fk_task_board" references="board(id)"/>
             </column>
