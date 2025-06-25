@@ -3,13 +3,13 @@ package com.amarogamedev.taskium.dto;
 import com.amarogamedev.taskium.entity.Task;
 import com.amarogamedev.taskium.enums.Priority;
 import com.amarogamedev.taskium.enums.TaskStatus;
+import com.amarogamedev.taskium.enums.TaskType;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 public record TaskDTO(
     Long id,
+    Long internalId,
     Long assignedUserId,
     String assignedUserName,
     Long createdByUserId,
@@ -21,11 +21,13 @@ public record TaskDTO(
     Date dueDate,
     Date completedDate,
     Priority priority,
+    TaskType type,
     Long boardId
 ) {
     public static TaskDTO fromEntity(Task task) {
         return new TaskDTO(
             task.getId(),
+            task.getInternalId(),
             task.getAssignedUser() != null ? task.getAssignedUser().getId() : null,
             task.getAssignedUser() != null ? task.getAssignedUser().getName() : null,
             task.getCreatedByUser() != null ? task.getCreatedByUser().getId() : null,
@@ -37,6 +39,7 @@ public record TaskDTO(
             task.getDueDate(),
             task.getCompletedDate(),
             task.getPriority(),
+            task.getType(),
             task.getBoard() != null ? task.getBoard().getId() : null
         );
     }
@@ -44,6 +47,7 @@ public record TaskDTO(
     public static Task toEntity(TaskDTO taskDTO) {
         Task task = new Task();
         task.setId(taskDTO.id());
+        task.setInternalId(taskDTO.internalId());
         task.setStatus(taskDTO.status());
         task.setTitle(taskDTO.title());
         task.setDescription(taskDTO.description());
@@ -51,6 +55,7 @@ public record TaskDTO(
         task.setDueDate(taskDTO.dueDate());
         task.setCompletedDate(taskDTO.completedDate());
         task.setPriority(taskDTO.priority());
+        task.setType(taskDTO.type());
         return task;
     }
 }

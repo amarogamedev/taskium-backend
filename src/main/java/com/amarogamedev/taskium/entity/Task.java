@@ -2,17 +2,14 @@ package com.amarogamedev.taskium.entity;
 
 import com.amarogamedev.taskium.enums.Priority;
 import com.amarogamedev.taskium.enums.TaskStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.amarogamedev.taskium.enums.TaskType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "task")
@@ -24,6 +21,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "internal_id", nullable = false, unique = true)
+    private Long internalId;
 
     @ManyToOne
     @JoinColumn(name = "assigned_user_id")
@@ -55,6 +55,10 @@ public class Task {
     @Enumerated(EnumType.STRING)
     @Column(name = "priority", nullable = false)
     private Priority priority;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private TaskType type;
 
     @JoinColumn(name = "board_id")
     @JsonIgnore

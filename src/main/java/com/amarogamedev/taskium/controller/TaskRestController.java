@@ -48,7 +48,7 @@ public class TaskRestController {
     @PostMapping
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
         try {
-            TaskDTO createdTask = taskService.saveTask(taskDTO);
+            TaskDTO createdTask = taskService.createTask(taskDTO);
             return ResponseEntity.ok(createdTask);
         } catch (Exception e) {
             log.error("An error occurred while creating a task on board {}", taskDTO.boardId(), e);
@@ -56,10 +56,10 @@ public class TaskRestController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDTO) {
         try {
-            TaskDTO updatedTask = taskService.saveTask(taskDTO);
+            TaskDTO updatedTask = taskService.updateTask(id, taskDTO);
             return ResponseEntity.ok(updatedTask);
         } catch (Exception e) {
             log.error("An error occurred while updating the task with id: {}", taskDTO.id(), e);

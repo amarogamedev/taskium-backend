@@ -1,6 +1,5 @@
 package com.amarogamedev.taskium.auth;
 
-import com.amarogamedev.taskium.auth.dto.UserInfoDTO;
 import com.amarogamedev.taskium.auth.dto.UserLoginDTO;
 import com.amarogamedev.taskium.auth.dto.UserRegisterDTO;
 import com.amarogamedev.taskium.auth.service.AuthenticationService;
@@ -8,11 +7,7 @@ import com.amarogamedev.taskium.entity.User;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
