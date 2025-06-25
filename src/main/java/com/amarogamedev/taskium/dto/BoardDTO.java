@@ -10,17 +10,15 @@ public record BoardDTO(
     String key,
     String name,
     UserDTO owner,
-    Set<UserDTO> members,
-    Integer taskCount
+    Set<UserDTO> members
 ) {
-    public static BoardDTO fromEntity(Board board, Integer taskCount) {
+    public static BoardDTO fromEntity(Board board) {
         return new BoardDTO(
                 board.getId(),
                 board.getKey(),
                 board.getName(),
                 board.getOwner() != null ? UserDTO.fromEntity(board.getOwner()) : null,
-                board.getMembers() != null ? board.getMembers().stream().map(UserDTO::fromEntity).collect(Collectors.toSet()) : null,
-                taskCount
+                board.getMembers() != null ? board.getMembers().stream().map(UserDTO::fromEntity).collect(Collectors.toSet()) : null
         );
     }
 

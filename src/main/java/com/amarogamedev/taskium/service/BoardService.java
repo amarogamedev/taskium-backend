@@ -34,7 +34,7 @@ public class BoardService {
 
         return Stream.concat(ownedBoards.stream(), memberBoards.stream())
                 .distinct()
-                .map(board -> BoardDTO.fromEntity(board, taskService.getTasksByBoardIdWith5DaysLimit(board.getId()).size()))
+                .map(BoardDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -48,13 +48,13 @@ public class BoardService {
         if(board.getId() != null) {
             validateMember(board);
         }
-        return BoardDTO.fromEntity(repository.save(board), 0);
+        return BoardDTO.fromEntity(repository.save(board));
     }
 
     public BoardDTO getBoardById(Long id) {
         Board board = findBoardById(id);
         validateMember(board);
-        return BoardDTO.fromEntity(board, taskService.getTasksByBoardId(board.getId()).size());
+        return BoardDTO.fromEntity(board);
     }
 
     public void validateMember(Board board) {
@@ -85,7 +85,7 @@ public class BoardService {
         board.getMembers().add(newMember);
         board = repository.save(board);
 
-        return BoardDTO.fromEntity(board, taskService.getTasksByBoardId(board.getId()).size());
+        return BoardDTO.fromEntity(board);
     }
 
     public BoardDTO removeMember(Long boardId, String userLogin) {
@@ -108,6 +108,6 @@ public class BoardService {
         board.getMembers().remove(memberToRemove);
         board = repository.save(board);
 
-        return BoardDTO.fromEntity(board, taskService.getTasksByBoardId(board.getId()).size());
+        return BoardDTO.fromEntity(board);
     }
 }
