@@ -17,14 +17,14 @@ public class TokenService {
     @Value("${jwt.secret}")
     String secret;
 
-    private Set<String> invalidatedTokens = new HashSet<>();
+    private final Set<String> invalidatedTokens = new HashSet<>();
 
     public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create().withIssuer("taskium-auth")
                     .withSubject(user.getLogin())
-                    .withExpiresAt(LocalDateTime.now().plusHours(2).atZone(ZoneId.systemDefault()).toInstant())
+                    .withExpiresAt(LocalDateTime.now().plusDays(1L).atZone(ZoneId.systemDefault()).toInstant())
                     .sign(algorithm);
         } catch (Exception e) {
             throw new RuntimeException("An error ocurrued while generating the token: " + e.getMessage());
