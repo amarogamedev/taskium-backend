@@ -21,38 +21,29 @@ public class BoardService {
     BoardRepository repository;
 
     @Autowired
-    @Lazy
-    TaskService taskService;
-
-    @Autowired
     UserService userService;
 
     public List<BoardDTO> findAllUserBoards() {
-        Long userId = UserService.getLoggedUser().getId();
-        List<Board> ownedBoards = repository.findByOwnerId(userId);
-        List<Board> memberBoards = repository.findByMembersId(userId);
-
-        return Stream.concat(ownedBoards.stream(), memberBoards.stream())
-                .distinct()
-                .map(BoardDTO::fromEntity)
-                .collect(Collectors.toList());
+        List<Board> boards = repository.findByUser(UserService.getLoggedUser());
+        return boards.stream().map(BoardDTO::fromEntity).collect(Collectors.toList());
     }
 
     public Board findBoardById(Long id) {
         return repository.findById(id).orElseThrow();
     }
 
-    public BoardDTO saveBoard(BoardDTO boardDTO) {
+    public Board findBoardByKey(String key) {
+        return repository.findByKeyAndUser(key, UserService.getLoggedUser()).orElseThrow();
+    }
+
+    public BoardDTO createBoard(BoardDTO boardDTO) {
         Board board = BoardDTO.toEntity(boardDTO);
         board.setOwner(UserService.getLoggedUser());
-        if(board.getId() != null) {
-            validateMember(board);
-        }
         return BoardDTO.fromEntity(repository.save(board));
     }
 
-    public BoardDTO getBoardById(Long id) {
-        Board board = findBoardById(id);
+    public BoardDTO getBoardByKey(String key) {
+        Board board = findBoardByKey(key);
         validateMember(board);
         return BoardDTO.fromEntity(board);
     }
@@ -65,8 +56,8 @@ public class BoardService {
         }
     }
 
-    public BoardDTO addMember(Long boardId, String userLogin) {
-        Board board = findBoardById(boardId);
+    public BoardDTO addMember(String key, String userLogin) {
+        Board board = findBoardByKey(key);
         User loggedUser = UserService.getLoggedUser();
 
         if (!Objects.equals(board.getOwner().getId(), loggedUser.getId())) {
@@ -88,8 +79,8 @@ public class BoardService {
         return BoardDTO.fromEntity(board);
     }
 
-    public BoardDTO removeMember(Long boardId, String userLogin) {
-        Board board = findBoardById(boardId);
+    public BoardDTO removeMember(String key, String userLogin) {
+        Board board = findBoardByKey(key);
         User loggedUser = UserService.getLoggedUser();
 
         if (!board.getOwner().equals(loggedUser)) {

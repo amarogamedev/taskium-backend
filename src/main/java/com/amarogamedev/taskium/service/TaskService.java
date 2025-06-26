@@ -79,12 +79,14 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public List<TaskDTO> getTasksByBoardIdWith5DaysLimit(Long boardId) {
+    public List<TaskDTO> getTasksByBoardKeyWith5DaysLimit(String boardKey) {
+        Long boardId = boardService.findBoardByKey(boardKey).getId();
         Date sevenDaysAgo = Date.valueOf(LocalDateTime.now().minusDays(5L).toLocalDate());
         return taskRepository.findByBoardIdAndDateLimit(boardId, sevenDaysAgo).stream().map(TaskDTO::fromEntity).toList();
     }
 
-    public List<TaskDTO> getTasksByBoardId(Long boardId) {
+    public List<TaskDTO> getTasksByBoardKey(String boardKey) {
+        Long boardId = boardService.findBoardByKey(boardKey).getId();
         return taskRepository.findByBoardId(boardId).stream().map(TaskDTO::fromEntity).toList();
     }
 

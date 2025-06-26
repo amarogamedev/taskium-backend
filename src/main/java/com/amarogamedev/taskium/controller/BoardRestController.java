@@ -28,12 +28,12 @@ public class BoardRestController {
         }
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<BoardDTO> getBoardById(@PathVariable Long id) {
+    @GetMapping(value = "/{boardKey}")
+    public ResponseEntity<BoardDTO> getBoardById(@PathVariable String boardKey) {
         try {
-            return ResponseEntity.ok(boardService.getBoardById(id));
+            return ResponseEntity.ok(boardService.getBoardByKey(boardKey));
         } catch (Exception e) {
-            log.error("An error occurred while searching for the board with id: {}", id, e);
+            log.error("An error occurred while searching for the board with key: {}", boardKey, e);
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -41,7 +41,7 @@ public class BoardRestController {
     @PostMapping
     public ResponseEntity<BoardDTO> createBoard(@RequestBody BoardDTO boardDTO) {
         try {
-            BoardDTO createdBoard = boardService.saveBoard(boardDTO);
+            BoardDTO createdBoard = boardService.createBoard(boardDTO);
             return ResponseEntity.ok(createdBoard);
         } catch (Exception e) {
             log.error("An error occurred while creating a board", e);
@@ -49,10 +49,10 @@ public class BoardRestController {
         }
     }
 
-    @PostMapping("/{boardId}/members/{userLogin}")
-    public ResponseEntity<BoardDTO> addMember(@PathVariable Long boardId, @PathVariable String userLogin) {
+    @PostMapping("/{boardKey}/members/{userLogin}")
+    public ResponseEntity<BoardDTO> addMember(@PathVariable String boardKey, @PathVariable String userLogin) {
         try {
-            return ResponseEntity.ok(boardService.addMember(boardId, userLogin));
+            return ResponseEntity.ok(boardService.addMember(boardKey, userLogin));
         } catch (IllegalArgumentException e) {
             log.error("Error adding member to board: {}", e.getMessage());
             return ResponseEntity.badRequest().build();
@@ -62,10 +62,10 @@ public class BoardRestController {
         }
     }
 
-    @DeleteMapping("/{boardId}/members/{userLogin}")
-    public ResponseEntity<BoardDTO> removeMember(@PathVariable Long boardId, @PathVariable String userLogin) {
+    @DeleteMapping("/{boardKey}/members/{userLogin}")
+    public ResponseEntity<BoardDTO> removeMember(@PathVariable String boardKey, @PathVariable String userLogin) {
         try {
-            return ResponseEntity.ok(boardService.removeMember(boardId, userLogin));
+            return ResponseEntity.ok(boardService.removeMember(boardKey, userLogin));
         } catch (IllegalArgumentException e) {
             log.error("Error removing member from board: {}", e.getMessage());
             return ResponseEntity.badRequest().build();

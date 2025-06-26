@@ -25,22 +25,22 @@ public class TaskRestController {
         }
     }
 
-    @GetMapping(value = "/board/{boardId}")
-    public ResponseEntity<?> getTasksByBoardId(@PathVariable Long boardId) {
+    @GetMapping(value = "/board/{boardKey}")
+    public ResponseEntity<?> getTasksByBoardKey(@PathVariable String boardKey) {
         try {
-            return ResponseEntity.ok(taskService.getTasksByBoardIdWith5DaysLimit(boardId));
+            return ResponseEntity.ok(taskService.getTasksByBoardKeyWith5DaysLimit(boardKey));
         } catch (Exception e) {
-            log.error("An error occurred while searching for tasks on board with id: {}", boardId, e);
+            log.error("An error occurred while searching for tasks on board with key: {}", boardKey, e);
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    @GetMapping(value = "/board/{boardId}/all")
-    public ResponseEntity<?> getAllTasksByBoardId(@PathVariable Long boardId) {
+    @GetMapping(value = "/board/{boardKey}/all")
+    public ResponseEntity<?> getAllTasksByBoardKey(@PathVariable String boardKey) {
         try {
-            return ResponseEntity.ok(taskService.getTasksByBoardId(boardId));
+            return ResponseEntity.ok(taskService.getTasksByBoardKey(boardKey));
         } catch (Exception e) {
-            log.error("An error occurred while searching for tasks on board with id: {}", boardId, e);
+            log.error("An error occurred while searching for tasks on board with key: {}", boardKey, e);
             return ResponseEntity.internalServerError().build();
         }
     }
