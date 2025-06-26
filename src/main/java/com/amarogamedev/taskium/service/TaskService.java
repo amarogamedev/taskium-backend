@@ -29,8 +29,12 @@ public class TaskService {
     @Lazy
     BoardService boardService;
 
-    public TaskDTO getTaskById(Long id) {
+    public TaskDTO getTaskDTOById(Long id) {
         return TaskDTO.fromEntity(taskRepository.findById(id).orElseThrow());
+    }
+
+    public Task getTaskById(Long id) {
+        return taskRepository.findById(id).orElseThrow();
     }
 
     public TaskDTO createTask(TaskDTO dto) {

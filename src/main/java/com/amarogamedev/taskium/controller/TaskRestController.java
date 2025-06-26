@@ -18,7 +18,7 @@ public class TaskRestController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<TaskDTO> getTaskById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(taskService.getTaskById(id));
+            return ResponseEntity.ok(taskService.getTaskDTOById(id));
         } catch (Exception e) {
             log.error("An error occurred while searching for the task with id: {}", id, e);
             return ResponseEntity.internalServerError().build();
