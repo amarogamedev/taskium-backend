@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -92,6 +93,10 @@ public class TaskService {
     public List<TaskDTO> getTasksByBoardKey(String boardKey) {
         Long boardId = boardService.findBoardByKey(boardKey).getId();
         return taskRepository.findByBoardId(boardId).stream().map(TaskDTO::fromEntity).toList();
+    }
+
+    public List<TaskDTO> getSubtasksByTaskId(Long taskId) {
+        return taskRepository.findByParentTaskId(taskId).stream().map(TaskDTO::fromEntity).toList();
     }
 
     public Long getNextInternalIdForBoard(Long boardId) {

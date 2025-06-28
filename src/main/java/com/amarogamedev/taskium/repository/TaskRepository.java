@@ -19,4 +19,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("SELECT MAX(t.internalId) FROM Task t WHERE t.board.id = :boardId")
     Long findMaxInternalIdByBoardId(@Param("boardId") Long boardId);
+
+    List<Task> findByParentTaskId(Long parentTaskId);
 }

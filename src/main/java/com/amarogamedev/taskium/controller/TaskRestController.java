@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/task")
 @Log4j2
@@ -19,6 +21,16 @@ public class TaskRestController {
     public ResponseEntity<TaskDTO> getTaskById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(taskService.getTaskDTOById(id));
+        } catch (Exception e) {
+            log.error("An error occurred while searching for the task with id: {}", id, e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping(value = "/{id}/subtasks")
+    public ResponseEntity<List<TaskDTO>> getSubtasksById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(taskService.getSubtasksByTaskId(id));
         } catch (Exception e) {
             log.error("An error occurred while searching for the task with id: {}", id, e);
             return ResponseEntity.internalServerError().build();
