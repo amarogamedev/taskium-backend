@@ -11,5 +11,6 @@
     <include file="create-board-users.xml" relativeToChangelogFile="true"/>
     <include file="25-06-25.xml" relativeToChangelogFile="true"/>
     <include file="26-06-25.xml" relativeToChangelogFile="true"/>
+    <include file="28-06-25.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

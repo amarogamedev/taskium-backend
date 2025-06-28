@@ -22,7 +22,8 @@ public record TaskDTO(
     Date completedDate,
     Priority priority,
     TaskType type,
-    Long boardId
+    Long boardId,
+    Long parentTaskId
 ) {
     public static TaskDTO fromEntity(Task task) {
         return new TaskDTO(
@@ -40,7 +41,8 @@ public record TaskDTO(
             task.getCompletedDate(),
             task.getPriority(),
             task.getType(),
-            task.getBoard() != null ? task.getBoard().getId() : null
+            task.getBoard() != null ? task.getBoard().getId() : null,
+            task.getParentTask() != null ? task.getParentTask().getInternalId() : null
         );
     }
 

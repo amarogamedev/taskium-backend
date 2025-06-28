@@ -64,4 +64,8 @@ public class Task {
     @JsonIgnore
     @ManyToOne
     private Board board;
+
+    @JoinColumn(name = "parent_task_id")
+    @ManyToOne
+    private Task parentTask;
 }
