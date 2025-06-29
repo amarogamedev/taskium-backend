@@ -6,6 +6,7 @@ import com.amarogamedev.taskium.entity.Task;
 import com.amarogamedev.taskium.entity.User;
 import com.amarogamedev.taskium.enums.TaskStatus;
 import com.amarogamedev.taskium.repository.TaskRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class TaskService {
     @Autowired
     @Lazy
     BoardService boardService;
+
+    @Autowired
+    @Lazy
+    CommentService commentService;
 
     public TaskDTO getTaskDTOById(Long id) {
         return TaskDTO.fromEntity(taskRepository.findById(id).orElseThrow());
@@ -84,10 +89,23 @@ public class TaskService {
         return TaskDTO.fromEntity(taskRepository.save(task));
     }
 
+    @Transactional
     public void deleteTask(Long id) {
         Task task = taskRepository.findById(id).orElseThrow();
         boardService.validateMember(task.getBoard());
+        deleteSubtasks(task);
+        commentService.deleteCommentsByTask(task);
         taskRepository.deleteById(id);
+    }
+
+    @Transactional
+    void deleteSubtasks(Task task) {
+        List<Task> subtasks = getSubtasksByTaskId(task.getId());
+        subtasks.forEach(subtask -> {
+            deleteSubtasks(subtask);
+            commentService.deleteCommentsByTask(subtask);
+            taskRepository.deleteById(subtask.getId());
+        });
     }
 
     public List<TaskDTO> getTasksByBoardKeyWith5DaysLimit(String boardKey) {
@@ -101,8 +119,12 @@ public class TaskService {
         return taskRepository.findByBoardId(boardId).stream().map(TaskDTO::fromEntity).toList();
     }
 
-    public List<TaskDTO> getSubtasksByTaskId(Long taskId) {
+    public List<TaskDTO> getSubtasksDTOByTaskId(Long taskId) {
         return taskRepository.findByParentTaskId(taskId).stream().map(TaskDTO::fromEntity).toList();
+    }
+
+    public List<Task> getSubtasksByTaskId(Long taskId) {
+        return taskRepository.findByParentTaskId(taskId);
     }
 
     public Long getNextInternalIdForBoard(Long boardId) {

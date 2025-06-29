@@ -7,6 +7,7 @@ import com.amarogamedev.taskium.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,5 +49,10 @@ public class CommentService {
         if (!comment.getAuthor().equals(UserService.getLoggedUser())) {
             throw new RuntimeException("User is not the author of this comment");
         }
+    }
+
+    @Transactional
+    public void deleteCommentsByTask(Task task) {
+        commentRepository.deleteByTask(task);
     }
 }

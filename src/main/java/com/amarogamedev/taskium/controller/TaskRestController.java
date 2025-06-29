@@ -30,7 +30,7 @@ public class TaskRestController {
     @GetMapping(value = "/{id}/subtasks")
     public ResponseEntity<List<TaskDTO>> getSubtasksById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(taskService.getSubtasksByTaskId(id));
+            return ResponseEntity.ok(taskService.getSubtasksDTOByTaskId(id));
         } catch (Exception e) {
             log.error("An error occurred while searching for the task with id: {}", id, e);
             return ResponseEntity.internalServerError().build();
