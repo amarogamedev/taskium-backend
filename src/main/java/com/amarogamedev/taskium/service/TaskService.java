@@ -53,6 +53,10 @@ public class TaskService {
             task.setAssignedUser(userService.findUserById(dto.assignedUserId()));
         }
 
+        if(dto.parentTaskId() != null) {
+            task.setParentTask(getTaskById(dto.parentTaskId()));
+        }
+
         return TaskDTO.fromEntity(taskRepository.save(task));
     }
 
@@ -60,14 +64,16 @@ public class TaskService {
         Task task = taskRepository.findById(taskId).orElseThrow();
         boardService.validateMember(task.getBoard());
 
-        User assignedUser = userService.findUserById(dto.assignedUserId());
-        task.setAssignedUser(assignedUser);
         task.setTitle(dto.title());
         task.setDescription(dto.description());
         task.setDueDate(dto.dueDate());
         task.setStatus(dto.status());
         task.setPriority(dto.priority());
         task.setType(dto.type());
+
+        if (dto.assignedUserId() != null) {
+            task.setAssignedUser(userService.findUserById(dto.assignedUserId()));
+        }
 
         if (TaskStatus.DONE.equals(dto.status())) {
             task.setCompletedDate(Date.valueOf(LocalDate.now()));
