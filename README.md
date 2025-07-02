@@ -2,11 +2,7 @@
 
 Taskium é uma ferramenta simples de gerenciamento de projetos inspirada no Jira, mas com foco na simplicidade e sem excesso de funcionalidades. Foi criada por [Luis Fellipe Amaro](https://github.com/seu-usuario-aqui) como um projeto pessoal para aprofundar seus conhecimentos em desenvolvimento web.
 
-![image](https://github.com/user-attachments/assets/5436842d-c734-433a-bdd4-613e7c16e475)
-
-![image](https://github.com/user-attachments/assets/9c902c7b-559c-46d6-b01e-0c24a9576e7b)
-
-![image](https://github.com/user-attachments/assets/9c1b5d44-0804-4b2e-8b02-95d9e6bc2eb0)
+![image](https://github.com/user-attachments/assets/fd4f7c1f-3cfc-4a5f-9ba4-c102b466595b)
 
 ---
 
