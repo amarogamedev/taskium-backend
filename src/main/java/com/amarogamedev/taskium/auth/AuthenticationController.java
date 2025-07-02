@@ -35,6 +35,20 @@ public class AuthenticationController {
             return ResponseEntity.ok(authenticationService.login(loginDTO));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating user");
+        }
+    }
+
+    @PutMapping(value = "/update")
+    public ResponseEntity<Object> updateUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+        try {
+            User updatedUser = authenticationService.updateUser(userRegisterDTO);
+            return ResponseEntity.ok(updatedUser);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating user");
         }
     }
 

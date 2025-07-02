@@ -68,4 +68,17 @@ public class AuthenticationService {
             tokenService.invalidateToken(token);
         }
     }
+
+    public User updateUser(UserRegisterDTO userRegisterDTO) {
+        User user = userService.findUserByLogin(userRegisterDTO.login());
+        user.setName(userRegisterDTO.name());
+
+        if(userRegisterDTO.password() != null) {
+            validatePassword(userRegisterDTO.password());
+            String cryptoPassword = new BCryptPasswordEncoder().encode(userRegisterDTO.password());
+            user.setPassword(cryptoPassword);
+        }
+
+        return userService.saveUser(user);
+    }
 }
